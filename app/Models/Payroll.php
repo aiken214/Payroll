@@ -13,6 +13,7 @@ class Payroll extends Model
         'monthly_salary' => 'decimal:2',
         'net_pay' => 'decimal:2',
         'total_gross_pay' => 'decimal:2',
+        'other_deductions_date' => 'date',
     ];
 
     public function payrollPeriod(): BelongsTo

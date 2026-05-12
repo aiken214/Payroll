@@ -43,8 +43,8 @@
                     <input type="number" step="0.01" name="basic_pay" class="form-control" value="{{ $payroll->basic_pay }}">
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Late Hours</label>
-                    <input type="number" step="0.25" name="late_hours" class="form-control" value="{{ $payroll->late_hours }}">
+                    <label class="form-label">Late (Minutes)</label>
+                    <input type="number" step="1" name="late_minutes" class="form-control" value="{{ $payroll->late_minutes }}">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Absent Days</label>
@@ -56,35 +56,35 @@
             <div class="row g-3 mb-4">
                 <div class="col-md-3">
                     <label class="form-label">Regular OT Hrs</label>
-                    <input type="number" step="0.25" name="regular_ot_hrs" class="form-control" value="{{ $payroll->regular_ot_hrs }}">
+                    <input type="number" step="0.01" name="regular_ot_hrs" class="form-control" value="{{ $payroll->regular_ot_hrs }}">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Rest Day Hrs</label>
-                    <input type="number" step="0.25" name="rest_day_hrs" class="form-control" value="{{ $payroll->rest_day_hrs }}">
+                    <input type="number" step="0.01" name="rest_day_hrs" class="form-control" value="{{ $payroll->rest_day_hrs }}">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Rest Day OT Hrs</label>
-                    <input type="number" step="0.25" name="rest_day_ot_hrs" class="form-control" value="{{ $payroll->rest_day_ot_hrs }}">
+                    <input type="number" step="0.01" name="rest_day_ot_hrs" class="form-control" value="{{ $payroll->rest_day_ot_hrs }}">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Night Diff Hrs</label>
-                    <input type="number" step="0.25" name="night_diff_hrs" class="form-control" value="{{ $payroll->night_diff_hrs }}">
+                    <input type="number" step="0.01" name="night_diff_hrs" class="form-control" value="{{ $payroll->night_diff_hrs }}">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Special Holiday Hrs</label>
-                    <input type="number" step="0.25" name="special_holiday_hrs" class="form-control" value="{{ $payroll->special_holiday_hrs }}">
+                    <input type="number" step="0.01" name="special_holiday_hrs" class="form-control" value="{{ $payroll->special_holiday_hrs }}">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Special Holiday OT</label>
-                    <input type="number" step="0.25" name="special_holiday_ot_hrs" class="form-control" value="{{ $payroll->special_holiday_ot_hrs }}">
+                    <input type="number" step="0.01" name="special_holiday_ot_hrs" class="form-control" value="{{ $payroll->special_holiday_ot_hrs }}">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Legal Holiday Hrs</label>
-                    <input type="number" step="0.25" name="legal_holiday_hrs" class="form-control" value="{{ $payroll->legal_holiday_hrs }}">
+                    <input type="number" step="0.01" name="legal_holiday_hrs" class="form-control" value="{{ $payroll->legal_holiday_hrs }}">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Legal Holiday OT</label>
-                    <input type="number" step="0.25" name="legal_holiday_ot_hrs" class="form-control" value="{{ $payroll->legal_holiday_ot_hrs }}">
+                    <input type="number" step="0.01" name="legal_holiday_ot_hrs" class="form-control" value="{{ $payroll->legal_holiday_ot_hrs }}">
                 </div>
             </div>
 
@@ -169,6 +169,14 @@
                 <div class="col-md-3">
                     <label class="form-label">Other Deductions</label>
                     <input type="number" step="0.01" name="other_deductions" class="form-control" value="{{ $payroll->other_deductions }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Deduction Date</label>
+                    <input type="date" name="other_deductions_date" class="form-control" value="{{ $payroll->other_deductions_date?->format('Y-m-d') ?? $payroll->other_deductions_date }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Deduction Remarks</label>
+                    <input type="text" name="other_deductions_remarks" class="form-control" value="{{ $payroll->other_deductions_remarks }}" placeholder="Reason for deduction...">
                 </div>
             </div>
 

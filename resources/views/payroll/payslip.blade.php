@@ -31,14 +31,24 @@
         .sig-area { margin-top: 30px; display: flex; justify-content: space-between; }
         .sig-box { width: 45%; text-align: center; }
         .sig-line { border-top: 1px solid #333; margin-top: 30px; padding-top: 4px; font-size: 9px; }
+        .watermark { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.06; z-index: -1; pointer-events: none; }
+        .header-logo { height: 40px; margin-bottom: 4px; }
         @media print { @page { margin: 10mm; } }
     </style>
 </head>
 <body>
+    @if($settings->watermark_logo)
+    <div class="watermark"><img src="{{ asset('storage/' . $settings->watermark_logo) }}" style="width:300px"></div>
+    @endif
+
     <div class="payslip">
         <div class="header">
+            @if($settings->company_logo)
+            <img src="{{ asset('storage/' . $settings->company_logo) }}" class="header-logo">
+            @endif
             <h1>{{ $settings->company_name ?? 'Company' }}</h1>
             @if($settings->company_address)<p style="font-size:9px;color:#666">{{ $settings->company_address }}</p>@endif
+            @if($settings->dti_permit_number)<p style="font-size:8px;color:#888">DTI Permit No.: {{ $settings->dti_permit_number }}</p>@endif
             <h2>PAYSLIP</h2>
             <div class="period">{{ $payroll->payrollPeriod->period_label }} | {{ $payroll->payrollPeriod->start_date->format('M d') }} - {{ $payroll->payrollPeriod->end_date->format('M d, Y') }}</div>
         </div>

@@ -10,7 +10,7 @@
                 <a href="{{ route('settings.contributions') }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-table"></i> Contribution Tables</a>
             </div>
             <div class="card-body">
-                <form method="POST" action="{{ route('settings.update') }}">
+                <form method="POST" action="{{ route('settings.update') }}" enctype="multipart/form-data">
                     @csrf @method('PUT')
 
                     <h6 class="text-muted border-bottom pb-2 mb-3">Company Info</h6>
@@ -22,6 +22,24 @@
                         <div class="col-md-6">
                             <label class="form-label">Company Address</label>
                             <input type="text" name="company_address" class="form-control" value="{{ $settings->company_address }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">DTI Permit Number</label>
+                            <input type="text" name="dti_permit_number" class="form-control" value="{{ $settings->dti_permit_number }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Header Logo</label>
+                            <input type="file" name="company_logo" class="form-control" accept="image/png,image/jpeg">
+                            @if($settings->company_logo)
+                                <small class="text-muted">Current: <img src="{{ asset('storage/' . $settings->company_logo) }}" style="height:30px" class="ms-1"></small>
+                            @endif
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Watermark Logo</label>
+                            <input type="file" name="watermark_logo" class="form-control" accept="image/png,image/jpeg">
+                            @if($settings->watermark_logo)
+                                <small class="text-muted">Current: <img src="{{ asset('storage/' . $settings->watermark_logo) }}" style="height:30px" class="ms-1"></small>
+                            @endif
                         </div>
                     </div>
 

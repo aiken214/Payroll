@@ -29,8 +29,12 @@
 </head>
 <body>
     <div class="header">
+        @if($settings->company_logo)
+        <img src="{{ asset('storage/' . $settings->company_logo) }}" style="height:35px;margin-bottom:4px">
+        @endif
         <h1>{{ $settings->company_name ?? 'Company' }}</h1>
         @if($settings->company_address)<p>{{ $settings->company_address }}</p>@endif
+        @if($settings->dti_permit_number)<p style="font-size:8px;color:#888">DTI Permit No.: {{ $settings->dti_permit_number }}</p>@endif
         <h2>PAYROLL REGISTER</h2>
         <p>{{ $payroll->period_label }} | {{ $payroll->start_date->format('F d') }} - {{ $payroll->end_date->format('F d, Y') }}</p>
     </div>
