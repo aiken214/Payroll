@@ -9,9 +9,12 @@
             @csrf
             @method('PUT')
             @include('employees._form', ['employee' => $employee])
-            <div class="mb-3 form-check">
-                <input type="checkbox" name="is_active" class="form-check-input" id="is_active" {{ old('is_active', $employee->is_active) ? 'checked' : '' }}>
-                <label class="form-check-label" for="is_active">Active</label>
+            <div class="mb-3">
+                <label class="form-label">Status</label>
+                <select name="is_active" class="form-select" required>
+                    <option value="1" {{ old('is_active', $employee->is_active) == true ? 'selected' : '' }}>Active</option>
+                    <option value="0" {{ old('is_active', $employee->is_active) == false ? 'selected' : '' }}>Inactive</option>
+                </select>
             </div>
             <div class="mt-4">
                 <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Update</button>
