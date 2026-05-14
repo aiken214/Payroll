@@ -21,6 +21,11 @@ class PayrollService
     public function processPayroll(PayrollPeriod $period, array $employeeData = []): void
     {
         $employees = Employee::where('is_active', true)->get();
+        $activeIds = $employees->pluck('id');
+
+        Payroll::where('payroll_period_id', $period->id)
+            ->whereNotIn('employee_id', $activeIds)
+            ->delete();
 
         foreach ($employees as $employee) {
             $data = $employeeData[$employee->id] ?? [];
