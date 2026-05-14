@@ -72,7 +72,7 @@
             </li>
             @role('Admin')
             <li class="nav-item mt-3">
-                <small class="text-muted px-3 text-uppercase" style="font-size:.7rem">Administration</small>
+                <small class="px-3 text-uppercase text-white" style="font-size:.7rem">Administration</small>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ request()->is('users*') ? 'active' : '' }}" href="{{ route('users.index') }}">
