@@ -103,7 +103,7 @@ class EmployeeController extends Controller
             'phic_number' => 'nullable|string',
             'hdmf_number' => 'nullable|string',
             'tin_number' => 'nullable|string',
-            'is_active' => 'boolean',
+            'is_active' => 'required|in:0,1',
             'date_hired' => 'nullable|date',
         ]);
 
@@ -111,7 +111,7 @@ class EmployeeController extends Controller
         $minWage = $settings ? $settings->minimum_daily_wage : 610;
         $workingDays = $settings ? $settings->working_days_per_month : 26;
         $validated['is_minimum_wage_earner'] = ($validated['monthly_salary'] / $workingDays) <= $minWage;
-        $validated['is_active'] = $request->has('is_active');
+        $validated['is_active'] = (bool) $validated['is_active'];
 
         $employee->update($validated);
 
