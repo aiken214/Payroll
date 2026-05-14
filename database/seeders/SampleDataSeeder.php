@@ -21,19 +21,19 @@ class SampleDataSeeder extends Seeder
         ]);
 
         $admin = User::firstOrCreate(
-            ['email' => 'admin@payrollx.com'],
+            ['email' => 'admin@payroll.com'],
             ['name' => 'System Admin', 'password' => bcrypt('password')]
         );
         $admin->assignRole('Admin');
 
         $hr = User::firstOrCreate(
-            ['email' => 'hr@payrollx.com'],
+            ['email' => 'hr@payroll.com'],
             ['name' => 'HR Manager', 'password' => bcrypt('password')]
         );
         $hr->assignRole('HR Manager');
 
         $payroll = User::firstOrCreate(
-            ['email' => 'payroll@payrollx.com'],
+            ['email' => 'payroll@payroll.com'],
             ['name' => 'Payroll Officer', 'password' => bcrypt('password')]
         );
         $payroll->assignRole('Payroll Officer');

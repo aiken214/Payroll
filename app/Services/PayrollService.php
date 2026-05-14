@@ -92,7 +92,8 @@ class PayrollService
             + $deMinimis + $allowances + $bonus + $otherTaxable + $adjustment;
 
         // Tardiness
-        $lateHours = $data['late_hours'] ?? 0;
+        $lateMinutes = $data['late_minutes'] ?? 0;
+        $lateHours = $lateMinutes / 60;
         $lateAmount = $lateHours * $hourlyRate;
         $absentDays = $data['absent_days'] ?? 0;
         $absentAmount = $absentDays * $dailyRate;
@@ -114,6 +115,8 @@ class PayrollService
         $companyLoan = $data['company_loan'] ?? $this->getActiveLoanAmount($employee, 'Company');
         $otherLoans = $data['other_loans'] ?? $this->getActiveLoanAmount($employee, 'Other');
         $otherDeductions = $data['other_deductions'] ?? 0;
+        $otherDeductionsRemarks = $data['other_deductions_remarks'] ?? null;
+        $otherDeductionsDate = $data['other_deductions_date'] ?? null;
 
         $totalDeductions = $totalTardiness + $totalContributions + $totalGovLoans
             + $companyLoan + $otherLoans + $otherDeductions;
@@ -177,7 +180,8 @@ class PayrollService
                 'other_taxable' => round($otherTaxable, 2),
                 'adjustment' => round($adjustment, 2),
                 'total_gross_pay' => round($totalGrossPay, 2),
-                'late_hours' => $lateHours,
+                'late_minutes' => $lateMinutes,
+                'late_hours' => round($lateHours, 4),
                 'late_amount' => round($lateAmount, 2),
                 'absent_days' => $absentDays,
                 'absent_amount' => round($absentAmount, 2),
@@ -194,6 +198,8 @@ class PayrollService
                 'company_loan' => round($companyLoan, 2),
                 'other_loans' => round($otherLoans, 2),
                 'other_deductions' => round($otherDeductions, 2),
+                'other_deductions_remarks' => $otherDeductionsRemarks,
+                'other_deductions_date' => $otherDeductionsDate,
                 'total_deductions' => round($totalDeductions, 2),
                 'amount_due' => round($amountDue, 2),
                 'taxable_income' => round($taxableIncome, 2),

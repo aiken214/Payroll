@@ -2,8 +2,19 @@
 @section('title', 'Contribution Tables')
 
 @section('content')
+<div class="mb-3">
+    <form method="GET" class="d-inline-flex align-items-center gap-2">
+        <label class="form-label mb-0">Year:</label>
+        <select name="year" class="form-select form-select-sm" style="width:auto" onchange="this.form.submit()">
+            @foreach($availableYears as $y)
+                <option value="{{ $y }}" {{ $year == $y ? 'selected' : '' }}>{{ $y }}</option>
+            @endforeach
+        </select>
+    </form>
+</div>
+
 <div class="card mb-4">
-    <div class="card-header"><h6 class="mb-0">SSS Contribution Table {{ date('Y') }}</h6></div>
+    <div class="card-header"><h6 class="mb-0">SSS Contribution Table {{ $year }}</h6></div>
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-sm table-striped mb-0" style="font-size:.85rem">
@@ -43,7 +54,7 @@
 <div class="row g-4">
     <div class="col-md-6">
         <div class="card">
-            <div class="card-header"><h6 class="mb-0">PhilHealth Table {{ date('Y') }}</h6></div>
+            <div class="card-header"><h6 class="mb-0">PhilHealth Table {{ $year }}</h6></div>
             <div class="card-body p-0">
                 <table class="table table-sm table-striped mb-0">
                     <thead class="table-light">

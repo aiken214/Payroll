@@ -134,7 +134,7 @@ class PayrollController extends Controller
             'bonus' => 'nullable|numeric',
             'other_taxable' => 'nullable|numeric',
             'adjustment' => 'nullable|numeric',
-            'late_hours' => 'nullable|numeric',
+            'late_minutes' => 'nullable|numeric',
             'absent_days' => 'nullable|numeric',
             'sss_loan' => 'nullable|numeric',
             'sss_calamity_loan' => 'nullable|numeric',
@@ -143,11 +143,16 @@ class PayrollController extends Controller
             'company_loan' => 'nullable|numeric',
             'other_loans' => 'nullable|numeric',
             'other_deductions' => 'nullable|numeric',
+            'other_deductions_remarks' => 'nullable|string|max:500',
+            'other_deductions_date' => 'nullable|date',
         ]);
 
-        $data = array_map(function ($val) {
-            return is_numeric($val) ? (float) $val : $val;
-        }, array_filter($data, fn($val) => $val !== null));
+        $data = array_filter($data, fn($val) => $val !== null);
+        foreach ($data as $key => $val) {
+            if (is_numeric($val) && !in_array($key, ['other_deductions_remarks', 'other_deductions_date'])) {
+                $data[$key] = (float) $val;
+            }
+        }
 
         $service->processEmployeePayroll($payroll->payrollPeriod, $payroll->employee, $data);
 
