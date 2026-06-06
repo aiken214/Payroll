@@ -89,10 +89,23 @@
             </div>
 
             <h6 class="border-bottom pb-2 mb-3">Leave</h6>
+            @php
+                $yearlyEntitlement = \App\Models\CompanySetting::first()->sick_leave_per_year ?? 3;
+                $usedThisYear = \App\Models\Payroll::where('employee_id', $payroll->employee_id)
+                    ->where('id', '!=', $payroll->id)
+                    ->whereHas('payrollPeriod', fn($q) => $q->where('year', $payroll->payrollPeriod->year))
+                    ->sum('leave_sick_taken');
+                $remainingSickLeave = max(0, $yearlyEntitlement - $usedThisYear);
+            @endphp
+            <div class="alert alert-info py-2 mb-3" style="font-size:.85rem">
+                Sick Leave Balance: <strong>{{ $remainingSickLeave }}</strong> of {{ $yearlyEntitlement }} days remaining this year
+                ({{ $usedThisYear }} used in other periods)
+            </div>
             <div class="row g-3 mb-4">
                 <div class="col-md-3">
                     <label class="form-label">Sick Leave Taken</label>
                     <input type="number" step="0.5" name="leave_sick_taken" class="form-control" value="{{ $payroll->leave_sick_taken }}">
+                    <small class="text-muted">Paid: up to {{ $remainingSickLeave }} days. Excess will be deducted.</small>
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Vacation Leave Taken</label>

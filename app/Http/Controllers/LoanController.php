@@ -47,6 +47,7 @@ class LoanController extends Controller
         ]);
 
         $validated['balance'] = $validated['total_amount'];
+        $validated['is_active'] = true;
 
         EmployeeLoan::create($validated);
 

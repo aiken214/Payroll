@@ -9,7 +9,7 @@ class CompanySetting extends Model
     protected $fillable = [
         'company_name', 'company_address', 'company_logo',
         'dti_permit_number', 'watermark_logo',
-        'working_days_per_month', 'minimum_daily_wage',
+        'working_days_per_month', 'minimum_daily_wage', 'sick_leave_per_year',
         'ot_rate_regular', 'ot_rate_rest_day', 'ot_rate_rest_day_ot',
         'ot_rate_special_holiday', 'ot_rate_special_holiday_ot',
         'ot_rate_legal_holiday', 'ot_rate_legal_holiday_ot',
