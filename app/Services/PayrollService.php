@@ -74,7 +74,22 @@ class PayrollService
         // Leave
         $leaveSickTaken = $data['leave_sick_taken'] ?? 0;
         $leaveVacationTaken = $data['leave_vacation_taken'] ?? 0;
-        $leaveAmount = ($leaveSickTaken + $leaveVacationTaken) * $dailyRate;
+
+        // Sick leave: check yearly balance (3 days/year by default)
+        // Calculate how much sick leave was already used this year (excluding current period)
+        $usedThisYear = Payroll::where('employee_id', $employee->id)
+            ->where('payroll_period_id', '!=', $period->id)
+            ->whereHas('payrollPeriod', fn($q) => $q->where('year', $period->year))
+            ->sum('leave_sick_taken');
+
+        $yearlyEntitlement = $this->settings->sick_leave_per_year ?? 3;
+        $remainingBalance = max(0, $yearlyEntitlement - $usedThisYear);
+
+        $leaveSickPaid = min($leaveSickTaken, $remainingBalance);
+        $leaveSickUnpaid = max(0, $leaveSickTaken - $leaveSickPaid);
+        $leaveSickUnpaidAmount = $leaveSickUnpaid * $dailyRate;
+
+        $leaveAmount = ($leaveSickPaid + $leaveVacationTaken) * $dailyRate;
 
         // Allowances & Additions
         $colaAmount = $data['cola_amount'] ?? 0;
@@ -102,7 +117,7 @@ class PayrollService
         $lateAmount = $lateHours * $hourlyRate;
         $absentDays = $data['absent_days'] ?? 0;
         $absentAmount = $absentDays * $dailyRate;
-        $totalTardiness = $lateAmount + $absentAmount;
+        $totalTardiness = $lateAmount + $absentAmount + $leaveSickUnpaidAmount;
 
         // Government Contributions (half of monthly - per cut-off)
         $sssContribution = $this->contributionService->computeSss($monthlySalary) / 2;
@@ -173,6 +188,9 @@ class PayrollService
                 'night_diff_hrs' => $nightDiffHrs,
                 'night_diff_amount' => round($nightDiffAmount, 2),
                 'leave_sick_taken' => $leaveSickTaken,
+                'leave_sick_paid' => $leaveSickPaid,
+                'leave_sick_unpaid' => $leaveSickUnpaid,
+                'leave_sick_unpaid_amount' => round($leaveSickUnpaidAmount, 2),
                 'leave_vacation_taken' => $leaveVacationTaken,
                 'leave_amount' => round($leaveAmount, 2),
                 'cola_amount' => round($colaAmount, 2),
@@ -213,6 +231,15 @@ class PayrollService
                 'thirteenth_month' => round($thirteenthMonth, 2),
             ]
         );
+
+        $this->deductLoanBalance($employee, 'SSS Salary', $sssLoan);
+        $this->deductLoanBalance($employee, 'SSS Calamity', $sssCalamityLoan);
+        $this->deductLoanBalance($employee, 'HDMF Salary', $hdmfLoan);
+        $this->deductLoanBalance($employee, 'HDMF Calamity', $hdmfCalamityLoan);
+        $this->deductLoanBalance($employee, 'Company', $companyLoan);
+        $this->deductLoanBalance($employee, 'Other', $otherLoans);
+
+        return $payroll;
     }
 
     protected function getActiveLoanAmount(Employee $employee, string $loanType): float
@@ -222,5 +249,23 @@ class PayrollService
             return 0;
         }
         return min($loan->semi_monthly_amortization, $loan->balance);
+    }
+
+    protected function deductLoanBalance(Employee $employee, string $loanType, float $amount): void
+    {
+        if ($amount <= 0) {
+            return;
+        }
+
+        $loan = $employee->activeLoans()->where('loan_type', $loanType)->first();
+        if (!$loan) {
+            return;
+        }
+
+        $loan->balance = max(0, $loan->balance - $amount);
+        if ($loan->balance <= 0) {
+            $loan->is_active = false;
+        }
+        $loan->save();
     }
 }

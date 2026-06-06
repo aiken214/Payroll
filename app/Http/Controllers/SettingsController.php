@@ -26,6 +26,7 @@ class SettingsController extends Controller
             'watermark_logo' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
             'working_days_per_month' => 'required|integer|min:20|max:31',
             'minimum_daily_wage' => 'required|numeric|min:0',
+            'sick_leave_per_year' => 'required|integer|min:0|max:30',
             'ot_rate_regular' => 'required|numeric',
             'ot_rate_rest_day' => 'required|numeric',
             'ot_rate_rest_day_ot' => 'required|numeric',
