@@ -53,6 +53,10 @@
                             <label class="form-label">Minimum Daily Wage</label>
                             <input type="number" step="0.01" name="minimum_daily_wage" class="form-control" value="{{ $settings->minimum_daily_wage }}" required>
                         </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Sick Leave Days/Year</label>
+                            <input type="number" name="sick_leave_per_year" class="form-control" value="{{ $settings->sick_leave_per_year ?? 3 }}" required>
+                        </div>
                     </div>
 
                     <h6 class="text-muted border-bottom pb-2 mb-3">Premium Pay Rates</h6>

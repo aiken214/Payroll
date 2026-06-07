@@ -123,8 +123,11 @@
             <div>
                 <div class="section-title">DEDUCTIONS</div>
                 <table class="detail-table">
-                    @if($payroll->total_tardiness > 0)
-                    <tr><td>Tardiness</td><td class="amount">{{ number_format($payroll->total_tardiness, 2) }}</td></tr>
+                    @if($payroll->late_amount > 0 || $payroll->absent_amount > 0)
+                    <tr><td>Late/Absent</td><td class="amount">{{ number_format($payroll->late_amount + $payroll->absent_amount, 2) }}</td></tr>
+                    @endif
+                    @if($payroll->leave_sick_unpaid_amount > 0)
+                    <tr><td>Unpaid Sick Leave <span class="sub">({{ $payroll->leave_sick_unpaid }} days)</span></td><td class="amount">{{ number_format($payroll->leave_sick_unpaid_amount, 2) }}</td></tr>
                     @endif
                     <tr><td>SSS</td><td class="amount">{{ number_format($payroll->sss_contribution, 2) }}</td></tr>
                     <tr><td>PhilHealth</td><td class="amount">{{ number_format($payroll->phic_contribution, 2) }}</td></tr>
