@@ -31,9 +31,12 @@
                 <label class="form-label">End Date</label>
                 <input type="date" name="end_date" class="form-control" value="{{ old('end_date', $loan->end_date?->format('Y-m-d')) }}">
             </div>
-            <div class="mb-3 form-check">
-                <input type="checkbox" name="is_active" class="form-check-input" id="is_active" {{ old('is_active', $loan->is_active) ? 'checked' : '' }}>
-                <label class="form-check-label" for="is_active">Active</label>
+            <div class="mb-3">
+                <label class="form-label">Status</label>
+                <select name="is_active" class="form-select" required>
+                    <option value="1" {{ old('is_active', $loan->is_active) == true ? 'selected' : '' }}>Active</option>
+                    <option value="0" {{ old('is_active', $loan->is_active) == false ? 'selected' : '' }}>Inactive</option>
+                </select>
             </div>
             <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Update</button>
             <a href="{{ route('loans.index') }}" class="btn btn-outline-secondary">Cancel</a>

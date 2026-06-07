@@ -66,11 +66,11 @@ class LoanController extends Controller
             'total_amount' => 'required|numeric|min:0',
             'monthly_amortization' => 'required|numeric|min:0',
             'balance' => 'required|numeric|min:0',
-            'is_active' => 'boolean',
+            'is_active' => 'required|in:0,1',
             'end_date' => 'nullable|date',
         ]);
 
-        $validated['is_active'] = $request->has('is_active');
+        $validated['is_active'] = (bool) $validated['is_active'];
         $loan->update($validated);
 
         return redirect()->route('loans.index')->with('success', 'Loan updated.');
