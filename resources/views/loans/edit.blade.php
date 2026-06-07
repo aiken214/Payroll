@@ -8,18 +8,21 @@
         <div class="bg-light p-3 rounded mb-3">
             <div class="row text-center">
                 <div class="col"><small class="text-muted">Type</small><div class="fw-bold">{{ $loan->loan_type }}</div></div>
-                <div class="col"><small class="text-muted">Total Amount</small><div class="fw-bold">{{ number_format($loan->total_amount, 2) }}</div></div>
                 <div class="col"><small class="text-muted">Start Date</small><div class="fw-bold">{{ $loan->start_date->format('M d, Y') }}</div></div>
             </div>
         </div>
         <form method="POST" action="{{ route('loans.update', $loan) }}">
             @csrf @method('PUT')
             <div class="row g-3 mb-3">
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    <label class="form-label">Total Amount</label>
+                    <input type="number" step="0.01" name="total_amount" class="form-control" value="{{ old('total_amount', $loan->total_amount) }}" required>
+                </div>
+                <div class="col-md-4">
                     <label class="form-label">Monthly Amortization</label>
                     <input type="number" step="0.01" name="monthly_amortization" class="form-control" value="{{ old('monthly_amortization', $loan->monthly_amortization) }}" required>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label class="form-label">Balance</label>
                     <input type="number" step="0.01" name="balance" class="form-control" value="{{ old('balance', $loan->balance) }}" required>
                 </div>

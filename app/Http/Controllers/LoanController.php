@@ -62,6 +62,7 @@ class LoanController extends Controller
     public function update(Request $request, EmployeeLoan $loan)
     {
         $validated = $request->validate([
+            'total_amount' => 'required|numeric|min:0',
             'monthly_amortization' => 'required|numeric|min:0',
             'balance' => 'required|numeric|min:0',
             'is_active' => 'boolean',
